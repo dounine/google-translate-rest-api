@@ -29,14 +29,16 @@ module.exports = function () {
         }
 
         var aa = async function bb() {
-            var result = await new Promise(function (resolve,reject) {
-                translate('hello', {from: 'en', to: 'zh-cn'}).then(function (res) {
+            var value = await new Promise(function (resolve,reject) {
+                translate(translateResource, {from: resourceLanguage, to: targetLanguage}).then(function (res) {
                     resolve(res.text);
                 }).catch(function (error) {
                     reject(error);
                 });
             });
-            ctx.body = result;
+            ctx.body = new Array({
+                value:value
+            });
         }
 
         return aa();
