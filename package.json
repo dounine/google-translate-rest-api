@@ -1,0 +1,28 @@
+{
+  "name": "google-translate-rest-api",
+  "version": "1.0.0",
+  "description": "google free translate api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dounine/google-translate-rest-api.git"
+  },
+  "keywords": [
+    "google-translate"
+  ],
+  "author": "lake",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dounine/google-translate-rest-api/issues"
+  },
+  "homepage": "https://github.com/dounine/google-translate-rest-api#readme",
+  "dependencies": {
+    "google-translate-api": "^2.3.0",
+    "koa": "^2.3.0",
+    "koa-body": "^2.5.0",
+    "koa-router": "^7.2.1"
+  }
+}
