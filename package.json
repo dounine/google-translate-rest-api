@@ -21,6 +21,7 @@
   "homepage": "https://github.com/dounine/google-translate-rest-api#readme",
   "dependencies": {
     "axios": "^0.17.0",
+    "forever": "^0.15.3",
     "google-translate-api": "^2.3.0",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
