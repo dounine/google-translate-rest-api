@@ -1,7 +1,6 @@
 var Router = require('koa-router');
 const translate = require('google-translate-api');
 const languages = require('./languages');
-const request = require('request-promise');
 const axios = require('axios');
 module.exports = function () {
     return new Router()
@@ -81,12 +80,11 @@ module.exports = function () {
                 ctx.body = error
             })
     }).post('/api/1/chats/:formid/mark-as-read',async function (ctx) {
-        console.log('进来了')
         let formid = ctx.params.formid;
 
         let config = {
             method: 'POST',
-            uri: 'https://www.skout.com/api/1/chats/'+formid+'/mark-as-read',
+            url: 'https://www.skout.com/api/1/chats/'+formid+'/mark-as-read',
             headers: {
                 'Content-Type':'application/x-www-form-urlencoded',
                 'session_id': ctx.header.session_id,
@@ -95,12 +93,12 @@ module.exports = function () {
             }
         };
         ctx.set("content-type", "application/json; charset=utf-8");
-        await request(config).then(function () {
+        await axios(config).then(function () {
             ctx.status = 200;
                     ctx.body = ''
                 }).catch(function (err) {
                     ctx.status = 401;
-                    ctx.body = err.response.body
+                    ctx.body = err.response.data
         });
     })
 }
