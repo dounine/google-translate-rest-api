@@ -1,8 +1,12 @@
 var Router = require('koa-router');
 const translate = require('google-translate-api');
 const languages = require('./languages');
+const request = require('request-promise');
+const axios = require('axios');
 module.exports = function () {
-    return new Router().post('/translate',async function (ctx) {
+    return new Router()
+        .post('/translate',async function (ctx) {
+        ctx.set("Access-Control-Allow-Origin", "*");
         var resourceLanguage = ctx.request.body.resourceLanguage;
         if(resourceLanguage===undefined){
             ctx.body = {
@@ -42,5 +46,61 @@ module.exports = function () {
         }
 
         return aa();
+    }).get('/recaptcha/api/reload',async function (ctx) {
+        let captchaInfo = {
+            c: ctx.query.c,
+            k: ctx.query.k,
+            reason: ctx.query.reason,
+            type: ctx.query.type,
+            lang: ctx.query.lang,
+            th: ctx.query.th,
+        };
+        let config = {
+            url: 'https://www.google.com/recaptcha/api/reload',
+            params: captchaInfo,
+        };
+        var bbb = async function bb() {
+            ctx.set("Access-Control-Allow-Origin", "*");
+                await axios(config).then(function (response) {
+                    ctx.body = response.data
+            }).catch(function (error) {
+                    reject(error)
+                })
+        }
+
+        return bbb();
+    }).get('/recaptcha/api/challenge',async function (ctx) {
+        let config = {
+            url: 'https://www.google.com/recaptcha/api/challenge',
+            params: ctx.query,
+        };
+            ctx.set("Access-Control-Allow-Origin", "*");
+            await axios(config).then(function (response) {
+                ctx.body = response.data
+            }).catch(function (error) {
+                ctx.body = error
+            })
+    }).post('/api/1/chats/:formid/mark-as-read',async function (ctx) {
+        console.log('进来了')
+        let formid = ctx.params.formid;
+
+        let config = {
+            method: 'POST',
+            uri: 'https://www.skout.com/api/1/chats/'+formid+'/mark-as-read',
+            headers: {
+                'Content-Type':'application/x-www-form-urlencoded',
+                'session_id': ctx.header.session_id,
+                // 'Origin': 'http://www.skout.com',
+                // 'Referer': 'http://www.skout.com/chat/'+fromId
+            }
+        };
+        ctx.set("content-type", "application/json; charset=utf-8");
+        await request(config).then(function () {
+            ctx.status = 200;
+                    ctx.body = ''
+                }).catch(function (err) {
+                    ctx.status = 401;
+                    ctx.body = err.response.body
+        });
     })
 }
