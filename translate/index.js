@@ -72,6 +72,10 @@ module.exports = function () {
         let config = {
             url: 'https://www.google.com/recaptcha/api/challenge',
             params: ctx.query,
+            proxy: {
+              host: 'localhost',
+              port: 1081,
+            },
         };
             ctx.set("Access-Control-Allow-Origin", "*");
             await axios(config).then(function (response) {
