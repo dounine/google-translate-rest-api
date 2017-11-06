@@ -45,9 +45,9 @@ module.exports = function () {
         }
 
         return aa();
-    }).get('/skout-image/:id/:size',async function (ctx) {
+    }).get('/skout-image',async function (ctx) {
         let config = {
-            url: 'http://images-public.skout.com/'+ctx.params.id+'_'+ctx.params.size,
+            url: 'http://images-public.skout.com/'+ctx.query.id+'_'+ctx.query.size,
         };
         var bbb = async function bb() {
             ctx.set("Access-Control-Allow-Origin", "*");
