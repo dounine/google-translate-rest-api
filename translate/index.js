@@ -47,11 +47,12 @@ module.exports = function () {
         return aa();
     }).get('/skout-image',async function (ctx) {
         let config = {
-            url: 'http://images-public.skout.com/'+ctx.query.id+'_'+ctx.query.size,
+            url: 'http://images-public.skout.com'+ctx.query.id+ctx.query.size,
+            responseType:'stream'
         };
         var bbb = async function bb() {
             ctx.set("Access-Control-Allow-Origin", "*");
-            ctx.set('content-type', 'image/jpg');
+            ctx.set('content-type', 'image/jpeg');
                 await axios(config).then(function (response) {
                     ctx.body = response.data
             }).catch(function (error) {
