@@ -45,6 +45,21 @@ module.exports = function () {
         }
 
         return aa();
+    }).get('/skout-image/:id/:size',async function (ctx) {
+        let config = {
+            url: 'http://images-public.skout.com/'+ctx.params.id+'_'+ctx.params.size,
+        };
+        var bbb = async function bb() {
+            ctx.set("Access-Control-Allow-Origin", "*");
+            ctx.set('content-type', 'image/jpg');
+                await axios(config).then(function (response) {
+                    ctx.body = response.data
+            }).catch(function (error) {
+                    reject(error)
+                })
+        }
+
+        return bbb();
     }).get('/recaptcha/api/reload',async function (ctx) {
         let captchaInfo = {
             c: ctx.query.c,
