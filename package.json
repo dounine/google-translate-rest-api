@@ -25,6 +25,7 @@
     "google-translate-api": "^2.3.0",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
+    "koa-cors": "^0.0.16",
     "koa-router": "^7.2.1",
     "koa2-cors": "^2.0.3",
     "request-promise": "^4.2.2"

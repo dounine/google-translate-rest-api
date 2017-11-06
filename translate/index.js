@@ -72,14 +72,23 @@ module.exports = function () {
         let config = {
             url: 'https://www.google.com/recaptcha/api/challenge',
             params: ctx.query,
-            proxy: {
-              host: 'localhost',
-              port: 1081,
-            },
         };
             ctx.set("Access-Control-Allow-Origin", "*");
             await axios(config).then(function (response) {
                 ctx.body = response.data
+            }).catch(function (error) {
+                ctx.body = error
+            })
+    }).get('/recaptcha/api/image',async function (ctx) {
+        let config = {
+            url: 'https://www.google.com/recaptcha/api/image',
+            params: ctx.query,
+            responseType:'stream'
+        };
+            ctx.set("Access-Control-Allow-Origin", "*");
+            ctx.set('content-type', 'image/jpg');
+            await axios(config).then(function (response) {
+                ctx.body = response.data;
             }).catch(function (error) {
                 ctx.body = error
             })
