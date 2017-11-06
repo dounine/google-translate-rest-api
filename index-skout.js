@@ -43,7 +43,7 @@ app.use(async function (ctx, next) {
     }
 
     var config = {
-        timeout: 3000,
+        timeout: 10000,
         method:ctx.method,
         url:'https://www.skout.com'+ctx.path,
         params:ctx.params,
@@ -67,12 +67,16 @@ app.use(async function (ctx, next) {
         for(var name in value.headers){
             ctx.set(name,value.headers[name])
         }
+        // console.log(value.data)
         ctx.set('access-control-allow-origin',"*");
+        // if(value.response){
+          // value = value.response;
+        // }
         if(value){
             ctx.status = value.status;
             ctx.body = value.data;
         }else{
-            ctx.body = ''
+            ctx.body = 'asdf'
         }
     }
     return aa();
