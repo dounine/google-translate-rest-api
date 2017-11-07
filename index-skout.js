@@ -46,7 +46,7 @@ app.use(async function (ctx, next) {
         timeout: 10000,
         method:ctx.method,
         url:'https://www.skout.com'+ctx.path,
-        params:ctx.params,
+        params:ctx.query,
         data:data,
         headers:headers,
       };
