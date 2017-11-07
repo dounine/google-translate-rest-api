@@ -6,7 +6,7 @@ const https = require('https');
 const qs = require('qs');
 const app = new Koa();
 var cors = require('koa2-cors');
-const port = process.env.PORT || 3334;
+const port = process.env.PORT || 3335;
 app.use(cors({
     origin:'*',
 }));
@@ -44,7 +44,7 @@ app.use(async function (ctx, next) {
     var config = {
         timeout: 10000,
         method:ctx.method,
-        url:'https://www.skout.com'+ctx.path,
+        url:'http://ios.skoutapis.com'+ctx.path,
         params:ctx.query,
         data:data,
         headers:headers,
@@ -83,5 +83,5 @@ app.use(async function (ctx, next) {
 
 app.use(router.routes());
 app.listen(port,function () {
-    console.log('index-skout is running http://0.0.0.0:'+port)
+    console.log('index-isskout is running http://0.0.0.0:'+port)
 });
