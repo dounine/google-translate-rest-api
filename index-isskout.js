@@ -21,7 +21,7 @@ app.use(async function (ctx, next) {
 
     // headers.host = 'www.skout.com';
     let protocol = headers._protocol || 'http://ios';
-    let img = ctx.query[__people_image];
+    let img = ctx.query['__people_image'];
 
     delete headers.host;
     delete headers._protocol;
@@ -51,6 +51,7 @@ app.use(async function (ctx, next) {
             timeout: 10000,
             url:img,
             headers:headers,
+	    responseType:'stream'
         }
     }else{
         config = {
