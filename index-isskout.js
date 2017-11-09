@@ -20,12 +20,7 @@ app.use(async function (ctx, next) {
     var headers = ctx.headers;
 
     // headers.host = 'www.skout.com';
-    let protocol = headers._protocol || 'http';
-    if(protocol==='http'){
-        protocol +='://ios'
-    }else{
-        protocol +='://i'
-    }
+    let protocol = headers._protocol || 'http://ios';
 
     delete headers.host;
     delete headers._protocol;
