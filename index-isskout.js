@@ -21,6 +21,7 @@ app.use(async function (ctx, next) {
 
     // headers.host = 'www.skout.com';
     let protocol = headers._protocol || 'http://ios';
+    let img = ctx.query[__people_image];
 
     delete headers.host;
     delete headers._protocol;
@@ -44,14 +45,24 @@ app.use(async function (ctx, next) {
         }
     }
 
-    var config = {
-        timeout: 10000,
-        method:ctx.method,
-        url:(protocol+'.skoutapis.com'+ctx.path),
-        params:ctx.query,
-        data:data,
-        headers:headers,
-      };
+    var config = {}
+    if(img){
+        config = {
+            timeout: 10000,
+            url:img,
+            headers:headers,
+        }
+    }else{
+        config = {
+            timeout: 10000,
+            method:ctx.method,
+            url:(protocol+'.skoutapis.com'+ctx.path),
+            params:ctx.query,
+            data:data,
+            headers:headers,
+        };
+    }
+
     async function aa(){
         let value = await new Promise(function(resolve,reject){
             axios(config).then(function(res){
@@ -74,6 +85,9 @@ app.use(async function (ctx, next) {
         // if(value.response){
           // value = value.response;
         // }
+        if(img){
+            ctx.set('content-type', 'image/jpeg');
+        }
         if(value){
             ctx.status = value.status;
             ctx.body = value.data;
