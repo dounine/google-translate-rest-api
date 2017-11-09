@@ -16,11 +16,19 @@ app.on('error', function(err){
 });
 
 app.use(async function (ctx, next) {
-    console.log(ctx.path)
+    // console.log(ctx.path)
     var headers = ctx.headers;
 
     // headers.host = 'www.skout.com';
+    let protocol = headers._protocol || 'http';
+    if(protocol==='http'){
+        protocol +='://ios'
+    }else{
+        protocol +='://i'
+    }
+
     delete headers.host;
+    delete headers._protocol;
     delete headers.origin;
     delete headers.referer;
     delete headers.connection;
@@ -44,7 +52,7 @@ app.use(async function (ctx, next) {
     var config = {
         timeout: 10000,
         method:ctx.method,
-        url:'http://ios.skoutapis.com'+ctx.path,
+        url:(protocol+'.skoutapis.com'+ctx.path),
         params:ctx.query,
         data:data,
         headers:headers,
