@@ -83,12 +83,12 @@ app.use(async function (ctx, next) {
             ctx.set(name,value.headers[name])
         }
         // console.log(value.data)
-        ctx.set('access-control-allow-origin',"*");
+        ctx.set('Access-Control-Allow-Origin',"*");
         // if(value.response){
           // value = value.response;
         // }
         if(img){
-            ctx.set('content-type', 'image/jpeg');
+            ctx.set('Content-Type', 'image/jpeg');
         }
         if(value){
             ctx.status = value.status;
