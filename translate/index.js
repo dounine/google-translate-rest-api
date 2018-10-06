@@ -1,11 +1,21 @@
 var Router = require('koa-router');
 const translate = require('google-translate-api');
+const translatTokenModule = require('google-translate-token');
 const languages = require('./languages');
 const axios = require('axios');
 module.exports = function () {
     return new Router()
         .post('/translate',async function (ctx) {
         ctx.set("Access-Control-Allow-Origin", "*");
+	var translateToken = ctx.request.body.token;
+        if(translateToken===undefined){
+		if(translateToken!=='xxx-xxx'){
+            ctx.body = {
+                error:1,
+                msg:'token error.'
+            }
+            return;}
+        }
         var resourceLanguage = ctx.request.body.resourceLanguage;
         if(resourceLanguage===undefined){
             ctx.body = {
@@ -39,8 +49,51 @@ module.exports = function () {
                     reject(error);
                 });
             });
+	    var tokenValue = await new Promise(function (resolve,reject) {
+                translatTokenModule.get(value).then(function (res) {
+                    resolve(res.value);
+               }).catch(function (error) {
+                    reject(error);
+               });
+            });
             ctx.body = new Array({
-                value:value
+                value:value,
+	        tk:tokenValue,
+		googleTsUrl:'https://translate.google.com/translate_tts?ie=UTF-8&q='+encodeURI(value)+'&tl=en&total=1&idx=0&textlen=11&tk='+tokenValue+'&client=t&prev=in1'
+            });
+        }
+
+        return aa();
+    }).post('/tk',async function (ctx) {
+        ctx.set("Access-Control-Allow-Origin", "*");
+	var translateToken = ctx.request.body.token;
+        if(translateToken===undefined){
+		if(translateToken!=='xxx-xxx'){
+            ctx.body = {
+                error:1,
+                msg:'token error.'
+            }
+            return;}
+        }
+        var resourceLanguage = ctx.request.body.text;
+        if(resourceLanguage===undefined){
+            ctx.body = {
+                error:1,
+                msg:'text not empty.'
+            }
+            return;
+        }
+        var aa = async function bb() {
+	    var tokenValue = await new Promise(function (resolve,reject) {
+                translatTokenModule.get(resourceLanguage).then(function (res) {
+                    resolve(res.value);
+               }).catch(function (error) {
+                    reject(error);
+               });
+            });
+            ctx.body = new Array({
+	        tk:tokenValue,
+		googleTsUrl:'https://translate.google.com/translate_tts?ie=UTF-8&q='+encodeURI(resourceLanguage)+'&tl=en&total=1&idx=0&textlen=11&tk='+tokenValue+'&client=t&prev=in1'
             });
         }
 
@@ -108,26 +161,5 @@ module.exports = function () {
             }).catch(function (error) {
                 ctx.body = error
             })
-    }).post('/api/1/chats/:formid/mark-as-read',async function (ctx) {
-        let formid = ctx.params.formid;
-
-        let config = {
-            method: 'POST',
-            url: 'https://www.skout.com/api/1/chats/'+formid+'/mark-as-read',
-            headers: {
-                'Content-Type':'application/x-www-form-urlencoded',
-                'session_id': ctx.header.session_id,
-                // 'Origin': 'http://www.skout.com',
-                // 'Referer': 'http://www.skout.com/chat/'+fromId
-            }
-        };
-        ctx.set("content-type", "application/json; charset=utf-8");
-        await axios(config).then(function () {
-            ctx.status = 200;
-                    ctx.body = ''
-                }).catch(function (err) {
-                    ctx.status = 401;
-                    ctx.body = err.response.data
-        });
     })
 }

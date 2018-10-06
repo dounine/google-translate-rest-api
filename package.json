@@ -23,6 +23,7 @@
     "axios": "^0.17.0",
     "forever": "^0.15.3",
     "google-translate-api": "^2.3.0",
+    "google-translate-token": "^1.0.0",
     "koa": "^2.3.0",
     "koa-body": "^2.5.0",
     "koa-cors": "^0.0.16",
